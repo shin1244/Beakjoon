@@ -1,36 +1,33 @@
 n = int(input())
+
 arr = [list(map(int,input().split())) for _ in range(n-1)]
 
-arr_dict = {}
-for i in arr:
-    key1 = i[0]
-    key2 = i[1]
+result = {i:i for i in range(2,n+1)}
 
-    if key1 in arr_dict:
-        arr_dict[key1].append(key2)
+
+graph_dict = {}
+
+for i, j in arr:
+    if i in graph_dict:
+        graph_dict[i].append(j)
     else:
-        arr_dict[key1] = [key2]
-
-    if key2 in arr_dict:
-        arr_dict[key2].append(key1)
+        graph_dict[i] = [j]
+    if j in graph_dict:
+        graph_dict[j].append(i)
     else:
-        arr_dict[key2] = [key1]
-result = {i:0 for i in range(2,n+1)}
+        graph_dict[j] = [i]
 
-def dfs(start):
-    visited = set()
-    stack= []
-    stack.append(start)
-    while stack:
-        now = stack.pop()
-        if now not in visited:
-            visited.add(now)
-            for i in arr_dict[now]:
-                if i not in visited:
-                    result[i] = now
-                    stack.append(i)
+stack = [1]
+visited = set()
 
-    
-dfs(1)
-for i in result.values():
-    print(i)
+while stack:
+    now = stack.pop()
+    if now not in visited:
+        visited.add(now)
+        for i in graph_dict[now]:
+            if i not in visited:
+                result[i] = now
+                stack.append(i)
+
+
+[print(i) for i in result.values()]

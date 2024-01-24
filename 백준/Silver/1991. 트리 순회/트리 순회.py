@@ -1,36 +1,34 @@
 n = int(input())
-arr = [input().split(' ') for _ in range(n)]
+arr = [list(input().split(' ')) for i in range(n)]
 
-graph = {}
+tree_dict = {}
+for p, c1, c2 in arr:
+    tree_dict[p] = [c1, c2]
 
-for i in arr:
-    graph[i[0]] = [i[1] if i[1] != '.' else None, i[2] if i[2] != '.' else None]
+def tree1(start):
+    now = tree_dict[start]
+    print(start, end='')
+    if now[0] != '.':
+        tree1(now[0])
+    if now[1] != '.':
+        tree1(now[1])
+def tree2(start):
+    now = tree_dict[start]
+    if now[0] != '.':
+        tree2(now[0])
+    print(start, end='')
+    if now[1] != '.':
+        tree2(now[1])
+def tree3(start):
+    now = tree_dict[start]
+    if now[0] != '.':
+        tree3(now[0])
+    if now[1] != '.':
+        tree3(now[1])
+    print(start, end='')
 
-
-def pre(start): #부모 왼 오
-    if start:
-        result.append(start)
-        pre(graph[start][0])
-        pre(graph[start][1])
-
-def ino(start): #왼 부모 오
-    if start:
-        ino(graph[start][0])
-        result.append(start)
-        ino(graph[start][1])
-
-def pos(start): #왼 오 부모
-    if start:
-        pos(graph[start][0])
-        pos(graph[start][1])
-        result.append(start)
-
-result = []
-pre('A')
-print(''.join(result))
-result = []
-ino('A')
-print(''.join(result))
-result = []
-pos('A')
-print(''.join(result))
+tree1('A')
+print()
+tree2('A')
+print()
+tree3('A')

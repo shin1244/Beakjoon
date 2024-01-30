@@ -1,16 +1,14 @@
-item, w = list(map(int,input().split()))
+items, w = list(map(int,input().split()))
 
-arr = [list(map(int,input().split())) for _ in range(item)]
+arr = [list(map(int,input().split())) for _ in range(items)]
 
-result_arr = []
-for i in range(w+1):
-    result_arr.append(0)
+DP = [0] * (w+1)
 
-for weight, value in arr:
-    for k in range(w, 0, -1):
-        if result_arr[k] != 0 and k+weight <= w:
-            result_arr[k+weight] = max(result_arr[k] + value, result_arr[k+weight])
-    if 0 < weight < w+1:
-        result_arr[weight] = max(result_arr[weight], value)
+for iw, iv in arr:
+    for i in range(w, 0, -1):
+        if DP[i] != 0 and i+iw <= w:
+            DP[i+iw] = max(DP[i] + iv, DP[i+iw])
+    if 0 < iw < w+1:
+        DP[iw] = max(DP[iw], iv)
 
-print(max(result_arr))
+print(max(DP))

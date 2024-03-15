@@ -2,11 +2,10 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-arr = [input().rstrip().split(" ") for _ in range(n)]
-
 result = []
 
-for i in arr:
+for _ in range(n):
+    i = input().rstrip().split(" ")
     if i[0] == '1':
         result.append(i[1])
     elif i[0] == '2':

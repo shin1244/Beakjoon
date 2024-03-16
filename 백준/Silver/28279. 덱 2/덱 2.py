@@ -3,11 +3,11 @@ import sys
 
 input=sys.stdin.readline
 n = int(input())
-arr = [list(map(int, input().split(' '))) for _ in range(n)]
 
 q = deque()
 
-for i in arr:
+for _ in range(n):
+    i = list(map(int, input().split(' ')))
     if i[0] == 1:
         q.appendleft(i[1])
     elif i[0] == 2:

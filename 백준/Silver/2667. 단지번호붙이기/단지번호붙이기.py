@@ -1,31 +1,23 @@
-from collections import deque
-
 n = int(input())
 
-arr = [list(map(int,list(input()))) for _ in range(n)]
+arr = [list(map(int,input())) for _ in range(n)]
+
+def DFS(b, a, count):
+    arr[b][a] = 0
+    for y, x in [[1,0],[0,1],[0,-1], [-1,0]]:
+        if y+b in range(n) and x+a in range(n):
+            if arr[y+b][x+a] == 1:
+                count += 1
+                count = DFS(y+b, x+a, count)
+    return count
 
 result = []
+
 for i in range(n):
     for j in range(n):
-        if arr[i][j] != 0:
-            q = deque([(i,j)])
-            c = 0
-            visited = set([(i,j)])
-            while q:
-                y,x = q.popleft()
-                if arr[y][x] == 1:
-                    arr[y][x] = 0
-                    c += 1
-                for py, px in [[1,0],[-1,0],[0,1],[0,-1]]:
-                    now_y, now_x = y+py, x+px
-                    if (now_y, now_x) not in visited:
-                        if 0<=now_y<n and 0<=now_x<n and arr[now_y][now_x] == 1:
-                            visited.add((now_y, now_x))
-                            q.append((now_y, now_x))
-            
-            result.append(c)
+        if arr[i][j] == 1:
+            result.append(DFS(i, j, 1))
 
 print(len(result))
-result.sort()
-for i in result:
+for i in sorted(result):
     print(i)

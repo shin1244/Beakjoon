@@ -1,45 +1,33 @@
-import sys
 from collections import deque
+import sys
 input = sys.stdin.readline
 
-m, n, h = list(map(int,input().split(' ')))
-in_m = range(m)
-in_n = range(n)
-in_h = range(h)
+width, length, height = map(int,input().split(' '))
 
-box = {}
-for floor in range(h):
-    box[floor] = []
-    for _ in range(n):
-        box[floor].append(list(map(int,input().split(' '))))
-                          
-real_tomato = deque()
+arr = [[list(map(int,input().split(' '))) for _ in range(length)] for _ in range(height)]
+tomato = deque()
 
-for floor in box:
-    for arr in range(len(box[floor])):
-        for tomato in range(len(box[floor][arr])):
-            if box[floor][arr][tomato] == 1:
-                real_tomato.append([floor, arr, tomato])
 
-next_day = []
-result = 0
-while real_tomato:
-    now_h, now_s, now_g = real_tomato.popleft()
-    for adj_h, adj_s, adj_g in [[1, 0, 0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]:
-        next_h, next_s, next_g = now_h + adj_h, now_s + adj_s, now_g + adj_g
-        if next_h in in_h and next_s in in_n and next_g in in_m and box[next_h][next_s][next_g] == 0:
-            box[next_h][next_s][next_g] = 1
-            next_day.append([next_h, next_s, next_g])
-    if not real_tomato:
-        result += 1
-        real_tomato.extend(next_day)
-        next_day = []
+for h in range(height):
+    for y in range(length):
+        for x in range(width):
+            if arr[h][y][x] == 1:
+                tomato.append([h,y,x,0])
 
-for floor in box:
-    for arr in range(len(box[floor])):
-        for tomato in range(len(box[floor][arr])):
-            if box[floor][arr][tomato] == 0:
-                print(-1)
-                exit()
+while tomato:
+    h, y, x, cnt = tomato.popleft()
+    for nh,ny,nx in [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]:
+        if 0 <= h+nh < height and 0 <= y+ny < length and 0 <= x+nx < width:
+            if arr[h+nh][y+ny][x+nx] == 0:
+                arr[h+nh][y+ny][x+nx] = 1
+                tomato.append([h+nh, y+ny, x+nx, cnt+1])
 
-print(result-1)
+                
+
+for i in arr:
+    for j in i:
+        if 0 in j:
+            print(-1)
+            exit()
+
+print(cnt)

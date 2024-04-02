@@ -1,9 +1,13 @@
 from collections import deque
+import sys
+
+input = sys.stdin.readline
+
 
 n, m = map(int,input().split())
-arr = [list(input()) for _ in range(n)]
+arr = [list(input().rstrip()) for _ in range(n)]
 input()
-bars = list(map(int,input().split(' ')))
+bars = list(map(int,input().rstrip().split(' ')))
 
 
 def BFS(y, x):

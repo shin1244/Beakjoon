@@ -20,7 +20,7 @@ def BFS(y, x, maps, L):
     n = len(maps)
     m = len(maps[0])
     q = deque([[0,y,x]])
-    visited = set()
+    visited = [[0 for i in range(m)] for i in range(n)]
 
     while q:
         cnt, now_y, now_x = q.popleft()
@@ -31,8 +31,8 @@ def BFS(y, x, maps, L):
         for ny, nx in [[1,0],[-1,0],[0,1],[0,-1]]:
             next_y, next_x = ny+now_y, nx+now_x
             if 0 <= next_y < n and 0 <= next_x < m:
-                if maps[next_y][next_x] != 'X' and (next_y, next_x) not in visited:
+                if maps[next_y][next_x] != 'X' and visited[next_y][next_x] == 0:
                     q.append([cnt+1, next_y, next_x])
-                    visited.add((next_y, next_x))
+                    visited[next_y][next_x] = 1
     
     return (-1, -1)

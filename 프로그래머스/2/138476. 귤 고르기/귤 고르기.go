@@ -1,9 +1,6 @@
-import (
-	"sort"
-)
+import "sort"
 
 func solution(k int, tangerine []int) int {
-	result := 0
 	countMap := make(map[int]int)
 	for _, val := range tangerine {
 		countMap[val]++
@@ -19,8 +16,6 @@ func solution(k int, tangerine []int) int {
 	for _, val := range tangerine[len(tangerine)-k:] {
 		countMap[val]++
 	}
-	for range countMap {
-		result++
-	}
-	return result
+
+	return len(countMap)
 }

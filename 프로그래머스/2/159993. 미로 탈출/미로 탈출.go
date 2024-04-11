@@ -1,3 +1,17 @@
+import (
+	"reflect"
+)
+
+func inVisited(visited [][]int, now []int) bool {
+	for _, val := range visited {
+		if reflect.DeepEqual(val, now) {
+			return false
+		}
+	}
+
+	return true
+}
+
 func BFS(y, x, l int, maps []string) [][]int {
 	n := len(maps)
 	m := len(maps[0])

@@ -1,10 +1,22 @@
+from collections import deque
+
 def solution(priorities, location):
-    arr = [[priorities[i], i] for i in range(len(priorities))]
-    count = 0
+    priorities = deque(priorities)
+    temp = deque(range(len(priorities)))
+    result = 0
     
-    while arr:
-        count += 1
-        arr = arr[arr.index(max(arr,key=lambda x: x[0])):]+arr[:arr.index(max(arr,key=lambda x: x[0]))]
-        print(arr)
-        if arr.pop(0)[1] == location:
-            return count
+    while temp:
+        now_number = priorities.popleft()
+        now_index = temp.popleft()
+        pri_check = 1
+        
+        for i in priorities:
+            if now_number < i:
+                priorities.append(now_number)
+                temp.append(now_index)
+                pri_check = 0
+                break
+        
+        if pri_check:
+            result += 1
+            if now_index == location: return result

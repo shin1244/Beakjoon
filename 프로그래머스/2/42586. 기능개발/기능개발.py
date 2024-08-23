@@ -1,13 +1,17 @@
+from collections import deque
+
 def solution(progresses, speeds):
-    arr = [i for i in zip(progresses, speeds)]
     result = []
-    while arr:
-        arr = [[i+j, j] for i,j in arr]
-        count = 0
-        while arr and arr[0][0] >= 100:
-            count += 1
-            arr.pop(0)
-        if count:
-            result.append(count)
-        
+    progresses = deque(progresses)
+    speeds = deque(speeds)
+    while progresses:
+        for i in range(len(progresses)):
+            progresses[i] += speeds[i]
+        c = 0
+        while progresses and progresses[0] >= 100:
+            progresses.popleft()
+            speeds.popleft()
+            c += 1
+        if c: result.append(c)
     return result
+            

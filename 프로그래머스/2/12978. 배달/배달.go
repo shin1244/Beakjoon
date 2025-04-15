@@ -22,39 +22,39 @@ func (pq *PriorityQueue) Pop() interface{} {
 }
 
 func solution(N int, road [][]int, k int) int {
-    dist := make([]int, N+1)
-    for i := 2; i < N+1; i++ {
-        dist[i] = int(1e9)
+    dist := make([]int, N + 1)
+    for i := range dist {
+        dist[i] = k + 1
     }
+    dist[1] = 0
+    
     graph := make(map[int][]Item)
     for _, r := range road {
-        from, to, distance := r[0], r[1], r[2]
-        graph[from] = append(graph[from], Item{node: to, distance: distance})
-        graph[to] = append(graph[to], Item{node: from, distance: distance})
+        start, end, distance := r[0], r[1], r[2]
+        graph[start] = append(graph[start], Item{node: end, distance:distance})
+        graph[end] = append(graph[end], Item{node: start, distance:distance})
     }
-
+    
     pq := &PriorityQueue{}
     heap.Init(pq)
     heap.Push(pq, Item{node:1, distance:0})
-
     for pq.Len() > 0 {
-        nowItem := heap.Pop(pq).(Item)
-        if nowItem.distance > dist[nowItem.node] {
-            continue
-        }
-        for _, edge := range graph[nowItem.node] {
-            newDist := dist[nowItem.node] + edge.distance
-            if newDist < dist[edge.node] {
-                dist[edge.node] = newDist
-                heap.Push(pq, Item{node:edge.node, distance:newDist})
+        nowNode := pq.Pop().(Item)
+        for _, item := range graph[nowNode.node] {
+            if dist[item.node] > nowNode.distance + item.distance {
+                dist[item.node] = nowNode.distance + item.distance
+                heap.Push(pq, Item{node:item.node, distance:nowNode.distance + item.distance})
             }
         }
     }
+    
     result := 0
     for _, val := range dist {
-        if val != 0 && val <= k {
+        if val <= k {
             result++
         }
     }
-    return result+1
+    
+    
+    return result
 }
